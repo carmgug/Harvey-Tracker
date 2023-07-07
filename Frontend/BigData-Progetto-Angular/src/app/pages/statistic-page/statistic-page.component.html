@@ -1,0 +1,179 @@
+
+<section class="section is-fullwidth " style="background-color: rgb(218, 225, 237);">
+  <div class="container is-fluid"  >
+    <div class="columns is-multiline">
+      <!--Prima riga contenente gli elementi da graficare-->
+      <div class="column is-full ">
+        <!--Tweet Più commentati-->
+        <app-box-of-tweets *ngIf="selectedQuery==availableQueries[0] && top_ten_Comment && top_ten_Comment.length>0" [tweets]="top_ten_Comment"></app-box-of-tweets>
+        <app-box-of-users *ngIf="selectedQuery==availableQueries[1] && top_users && top_users.length>0" [users]="top_users" [selectedOptions_input]="selectedOptions"></app-box-of-users>
+        <app-box-istogramma-tweets-by-day *ngIf="selectedQuery==availableQueries[2] && statistic_dist_by_day && statistic_dist_by_day.length>0"
+          [statistic_dist_by_day]="statistic_dist_by_day"></app-box-istogramma-tweets-by-day>
+        <app-box-top-ten-hashtag-dist *ngIf="selectedQuery==availableQueries[3] && statistic_top_ten_hashtag && statistic_top_ten_hashtag.length>0"
+          [statistic_top_ten_hashtag]="statistic_top_ten_hashtag"></app-box-top-ten-hashtag-dist>
+        <app-top-trends-component  
+          *ngIf="selectedQuery==availableQueries[4] && (topN_mention || topN_words || topN_hashtag)" 
+          [top_n_hashtag]="topN_hashtag" [top_n_mention]="topN_mention" [top_n_words]="topN_words"
+          [selected_topics_h_input]="selectedOptions" [selected_topics_m_input]="selectedOptions" [selected_topics_w_input]="selectedOptions">
+        </app-top-trends-component>
+      </div>
+
+      <!--Seconda Riga-->
+      <div class="column is-full">
+        <div class="box" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+            <div class="buttons is-centered">
+                <div class="field is-grouped">
+                  <div class="control is-expanded">
+                    <div class="select is-rounded is-link is-outlined is-fullwidth">
+                      <select name="selectedQuery"   [(ngModel)]='selectedQuery' >
+                        <option *ngFor="let query of availableQueries" value={{query}} >{{translateQueries[query]}}</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!--Query getTopComments-->
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[0]">
+                    <div class="select is-rounded is-link is-outlined is-fullwidth">
+                      <select name="selectedTopic"   [(ngModel)]='selectedTopic'  >
+                        <option *ngFor="let topic of availableTopicOfTweets" [value]="topic" >{{topic}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[0]">
+                      <button class="button is-rounded is-link is-outlined" [class.is-loading]="isLoading['button1']" id='button1' (click)="top10MostCommentedTweets('button1')">
+                          <mat-icon> search </mat-icon>
+                      </button>
+                  </div>
+
+                  <!--Query getNUserWithMostOfTweet(n:int,selectedTopics:Array[String])-->
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[1]">
+                    <input class="input is-rounded" type="number" min="0" max="100" step="4" [(ngModel)]="n" placeholder="1-100 (divisible by 4)">
+                  </div>
+
+
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[1]">
+                    <button class="button is-rounded is-link is-outlined" [disabled]="!n || selectedOptions.length==0 ? true : n<0 || n>100 || n%4!==0 " 
+                      
+                      [class.is-loading]="isLoading['button2']" id='button2' (click)="getNUserWithMostOfTweet('button2')">
+                      
+                      <mat-icon> search </mat-icon>
+                    </button>
+                  </div>
+                  <!--Query getDistributionOfTweetsByDay-->
+                  
+                    <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[2]">
+                      <input #datePicker class="input is-rounded is-link is-outlined is-full" type="text" placeholder="Insert Start and End Date">
+                    </div>
+                  
+
+
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[2]">
+                    <button class="button is-rounded is-link is-outlined"  
+                      [class.is-loading]="isLoading['button3']" id='button3' (click)="getDistributionOfTweetsByDay('button3')">
+                      <mat-icon> search </mat-icon>
+                    </button>
+                  </div>
+
+                  <!--Query getDistributionOfTop10HashtagByDay-->
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[3]">
+                    <input #datePicker class="input is-rounded is-link is-outlined is-full" type="text" placeholder="Insert Start and End Date">
+                  </div>
+
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[3]">
+                    <button class="button is-rounded is-link is-outlined"  
+                      [class.is-loading]="isLoading['button4']" id='button4' (click)="getDistributionOfTop10HashtagByDay('button4')">
+                      <mat-icon> search </mat-icon>
+                    </button>
+                  </div>
+                  <!--Query getFirstNMentionORNWordsORNHashtag-->
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[4]">
+                    <div class="select is-rounded is-link is-outlined is-fullwidth">
+                      <select name="selectedTrend"  [(ngModel)]='selectedTrend' >
+                        <option value="Words" >Words</option>
+                        <option value="Mentions" >Mentions</option>
+                        <option value="Hashtag">Hashtag</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[4]">
+                    <input class="input is-rounded" type="number" min="0" max="100" [(ngModel)]="top_N" placeholder="number in [1,100]">
+                  </div>
+
+                  <div class="control is-expanded" *ngIf="selectedQuery==availableQueries[4]">
+                    <button class="button is-rounded is-link is-outlined"  
+                      [class.is-loading]="isLoading['button5']" id='button5' 
+                      [disabled]="!top_N || selectedOptions.length==0 ? true : top_N<0 || top_N>100"
+                      (click)="getTrend('button5')">
+                      <mat-icon> search </mat-icon>
+                    </button>
+                  </div>
+
+                </div>
+            </div>
+        </div>
+      </div>
+      <!--Terza riga contenente le radiobox per la query in pos1-->
+      <div class="column is-full" *ngIf="selectedQuery==availableQueries[1] || selectedQuery==availableQueries[4]">
+        <div class="box" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+          <div class="field is-grouped is-grouped-multiline">
+            <div class="control" *ngFor="let topic of removeTopicAll()" >
+              <label class="checkbox" >
+                <input type="checkbox" (change)="addTopic(topic)" [checked]="selectedOptions.includes(topic)" >
+                {{topic}}
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!--Query TopNuser-->
+                  <!--
+                  <div class="control"  *ngIf="selectedQuery==availableQueries[1]">
+                    <div class="dropdown is-multiple" [ngClass]="active ? 'is-active' : ''">
+                      <div class="dropdown-trigger">
+                        <button class="button is-rounded is-link is-outlined is-fullwidth" aria-haspopup="true" aria-controls="dropdown-menu" (click)="active ? active=false : active=true">
+                          <span>Seleziona categorie</span>
+                          <span class="icon is-small"><i class="fas fa-angle-down" aria-hidden="true"></i></span>
+                        </button>
+                      </div>
+                      <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                        <div class="dropdown-content">
+
+                          <a class="dropdown-item" *ngFor="let topic of availableTopicOfTweets">
+                            <a class="dropdown-item">
+                              <label class="checkbox">
+                                <input type="checkbox" (change)="aggiungiCategoria(topic)" >
+                                {{topic}}
+                              </label>
+                            </a>
+                          </a>
+
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  -->

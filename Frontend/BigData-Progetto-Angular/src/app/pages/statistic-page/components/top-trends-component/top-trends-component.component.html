@@ -1,0 +1,112 @@
+<div class="columns is-multiline">
+    <!--TOP WORDS-->
+    <div class="column is-full" *ngIf="top_n_words && top_n_words.length>0">
+        <div class="box has-text-centered" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+            <div class="columns is-desktop">
+                <div class="column is-two-thirds">
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                        <canvas #histogramChartWords id="histogramChartWords"></canvas>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <!--TABELLA-->
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; max-height: 600px;">
+                        <div class="table-container" style="overflow-x: auto; overflow-y: auto;">
+                            <table class="table custom-table">
+                                <thead>
+                                <tr>
+                                    <th>Word</th>
+                                    <th *ngFor="let topic of selected_topics_w" title="{{topic}}">{{topicAbbreviations[topic]}}</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of top_n_words">
+                                    <td>{{ item.words }}</td>
+                                    <td *ngFor="let topic of selected_topics_w">{{item[topic]}}</td>
+                                    <td>{{ item.Total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                         
+                    
+                </div>
+            </div>  
+        </div>
+    </div>
+    <!--TOP MENTION-->
+    <div class="column is-full" *ngIf="top_n_mention && top_n_mention.length>0">
+        <div class="box has-text-centered" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+            <div class="columns is-desktop">
+                <div class="column is-two-thirds">
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%; overflow: auto;">
+                        <canvas #histogramChartMentions id="histogramChartMentions"></canvas>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <!--TABELLA-->
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; max-height: 600px;">
+                        <div class="table-container" style="overflow-x: auto; overflow-y: auto;">
+                            <table class="table custom-table">
+                                <thead>
+                                <tr>
+                                    <th>Full name</th>
+                                    <th>Username</th>
+                                    <th *ngFor="let topic of selected_topics_m" title="{{topic}}">{{topicAbbreviations[topic]}}</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of top_n_mention">
+                                    <td>{{ item.user_mentions.name }}</td>
+                                    <td>{{ item.user_mentions.screen_name }}</td>
+                                    <td *ngFor="let topic of selected_topics_m">{{item[topic]}}</td>
+                                    <td>{{ item.Total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <!--TOP HASHTAG-->
+    <div class="column is-full" *ngIf="top_n_hashtag && top_n_hashtag.length>0">
+        <div class="box has-text-centered" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+            <div class="columns is-desktop">
+                <div class="column is-two-thirds">
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                        <canvas #histogramChartHashtags id="histogramChartHashtags"></canvas>
+                    </div>
+                </div>
+                <div class="column is-one-third">
+                    <!--TABELLA-->
+                    <div class="box is-flex is-justify-content-center" style="border: 2px solid #4482c0; border-radius: 30px; height: 600px;">
+                        <div class="table-container" style="overflow-x: auto; overflow-y: auto;">
+                            <table class="table custom-table">
+                                <thead>
+                                <tr>
+                                    <th>Hashtag</th>
+                                    <th *ngFor="let topic of selected_topics_h" title="{{topic}}">{{topicAbbreviations[topic]}}</th>
+                                    <th>Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let item of top_n_hashtag">
+                                    <td>{{ item.hashtag }}</td>
+                                    <td *ngFor="let topic of selected_topics_h">{{item[topic]}}</td>
+                                    <td>{{ item.Total }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div> 
+                    </div>
+                </div>
+            </div>  
+        </div>
+
+    </div>
+</div>

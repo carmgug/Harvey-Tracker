@@ -1,0 +1,148 @@
+
+
+<section class="section is-fullwidth" style="background-color: rgb(218, 225, 237);">
+  <div class="container" >
+    <div class="columns is-multiline is-gapless">
+      <!--Leggenda-Prima Riga-->
+      <div class="column is-full">
+        <div class="box" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+          <h1 class="is-size-5 has-text-weight-bold has-text-black"> Tweet category legend </h1>
+          <div class="tags are-large is-flex-wrap-wrap is-flex-direction-row is-align-items-center is-justify-content-center">
+            <span *ngFor="let element of iconColor|keyvalue" class="tag is-flex is-align-items-center is-flex-shrink-0">
+              <img [src]="element.value.options.iconUrl" alt="Tag Image" style="width: 15px;height: 20px;margin-right: 10px;">
+              {{ formatString(element.key) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <!--Seconda Riga Mappa e Bottoni-->
+      <div class="columns is-desktop is-gapless">
+        <!--Colonna contenente Mappa-->
+        <div class="column is-one-thirds ">
+          <div class="box" style="height: 100%;border: 2px solid #f6f7f8;border-radius: 30px;">
+            <div class="map" id="mapid"></div>
+          </div>
+        </div>
+        <!--Colonna contenente Tasi di contollo-->
+        <div class="column is-two-third">
+          <div class="box has-text-centered" style="border: 2px solid #f6f7f8; border-radius: 30px;height: 100%;">
+            <!--Tasi di controllo-->
+            <div class="columns is-multiline">
+              <!-- Prima Riga -->
+              <div class="column is-full">
+                <div class="field is-grouped is-expanded">
+                  <div class="control is-expanded">
+                    <div class="select is-rounded is-link is-outlined is-fullwidth">
+                      <select name="selectedTopic" [(ngModel)]="selectedTopic">
+                        <option *ngFor="let topic of availableTopicOfTweets" [value]="topic">{{topic}}</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="control is-expanded">
+                    <input id="start-date" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert Start and End Date">
+                  </div>
+                  <div class="control">
+                    <button class="button is-rounded is-link is-outlined" [class.is-loading]="isLoading['button1']" id="button1" (click)="getGeoByDateAndTopic('button1')">
+                      <span class="icon">
+                        <i class="fas fa-search"></i>
+                      </span>
+                      <span>Search</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Seconda Riga -->
+              <div class="column is-full">
+                <div class="field is-grouped is-expanded">
+                  <div class="control is-expanded">
+                    <input [(ngModel)]="selectedTweetID" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert TweetID">
+                  </div>
+                  <div class="control is-expanded">
+                    <button class="button is-rounded is-link is-outlined is-fullwidth" [class.is-loading]="isLoading['button2']" (click)="getTweetByTweetID('button2')">Search Tweet</button>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Terza Riga -->
+              <div class="column is-full">
+                <div class="field is-grouped is-expanded">
+                  <div class="control is-expanded">
+                    <input [(ngModel)]="selected_point_lat" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert Latitude">
+                  </div>
+                  <div class="control  is-expanded">
+                    <input [(ngModel)]="selected_point_lng" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert Longitude">
+                  </div>
+                  <div class="control is-expanded">
+                    <input [(ngModel)]="selected_km" class="input is-rounded is-link is-outlined" type="text" placeholder="Insert Km">
+                  </div>
+                  <div class="control is-expanded">
+                    <button class="button is-rounded is-link is-outlined" [class.is-loading]="isLoading['button3']" (click)="getAllGEOAndTweetIDNearestP('button3')">Search Tweet Nearest P</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      <!--3 riga-->
+      <div class="column is-full" *ngIf="tweet" >
+          <app-tweet-box [tweet]="tweet"></app-tweet-box>        
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--OLD
+  
+<div class="buttons is-justify-content-center is-flex">
+               Prima Riga 
+              <div class="field is-grouped is-expanded">
+                 Tasto di selezione Topic 
+                <div class="control is-expanded is-fullwidth">
+                  <div class="select is-rounded is-link is-outlined is-fullwidth">
+                    <select name="selectedTopic" [(ngModel)]='selectedTopic'>
+                      <option *ngFor="let topic of availableTopicOfTweets" [value]="topic">{{topic}}</option>
+                    </select>
+                  </div>
+                </div>
+            
+                Tasto Selezionatore Data 
+                <div class="control is-expanded">
+                  <input id="start-date" class="input is-rounded is-link is-outlined" type="text" placeholder="Insert Start and End Date">
+                </div>
+                
+                 Tasto per invio richiesta http 
+                <div class="control">
+                  <button class="button is-rounded is-link is-outlined" [class.is-loading]="isLoading['button1']" id='button1' (click)="getGeoByDateAndTopic('button1')">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </div>
+              </div>
+            
+              Seconda Riga di bottoni 
+              <div class="field is-grouped is-full">
+                <div class="control is-expanded is-fullwidth">
+                  <input [(ngModel)]="selectedTweetID" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert TweetID">
+                </div>
+                <div class="control is-expanded">
+                  <button class="button is-rounded is-link is-outlined is-full" [class.is-loading]="isLoading['button2']" (click)="getTweetByTweetID('button2')">Cerca Tweet</button>
+                </div>
+              </div>
+            
+               Terza Riga 
+              <div class="field is-grouped is-full">
+                <div class="control is-expanded is-fullwidth">
+                  <input [(ngModel)]="selected_point_lat" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert Latitude">
+                </div>
+                <div class="control is-expanded">
+                  <input [(ngModel)]="selected_point_lng" class="input is-rounded is-link is-outlined is-fullwidth" type="text" placeholder="Insert Longitude">
+                </div>
+                <div class="control is-expanded is-fullwidth">
+                  <button class="button is-rounded is-link is-outlined is-fullwidth" [class.is-loading]="isLoading['button2']" (click)="getTweetByTweetID('button2')">Cerca Tweet</button>
+                </div>
+              </div>
+            </div>
+
+-->

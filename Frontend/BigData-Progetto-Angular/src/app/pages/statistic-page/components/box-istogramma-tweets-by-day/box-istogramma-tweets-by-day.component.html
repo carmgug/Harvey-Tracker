@@ -1,0 +1,115 @@
+<div class="box has-text-centered" [@inOutAnimation] style="border: 2px solid #f6f7f8; border-radius: 30px;">
+  <div class="columns is-multiline">
+    <!--Prima Riga Avente i Grafici-->
+    <div class="column is-full">
+    <div class="columns is-desktop">
+      <div class="column is-two-thirds">
+
+        <div class="box has-text-centereds is-justify-content-center is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+          <canvas id="histogramChart"></canvas>
+          </div>
+
+      </div>
+      <div class="column is-one-third">
+        <div class="box has-text-centered is-justify-content-center is-fullwidth " style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+          <div class="columns is-multiline">
+              <div class="column is-full">
+                  <h1>{{truncDay(this.statistic_dist_by_day[this.currDay].Day)}}</h1>
+              </div>
+              <div class="column is-full" >
+              <div class="is-flex is-justify-content-center is-align-items-center">
+                <canvas id="pieChart"></canvas>
+                </div>
+              </div>
+              <div class="column is-full">
+                <div class="buttons is-centered">
+                  <button class="button is-rounded is-outlined is-info " [disabled]="this.currDay==0 ? true : false" (click)="previousDayChart()" >Previous Chart</button>
+                  <button class="button is-rounded is-outlined is-info" [disabled]="this.currDay==(this.statistic_dist_by_day.length-1) ? true : false"(click)="nextDayChart()"  >Next Chart</button>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <!--Seconda Riga Avente le statistiche-->
+    <div class="column is-full">
+      <div class="columns is-desktop">
+        <div class="column is-4">
+          <div class="box has-text-centereds  is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px;">
+            <h2>Most Tweet Published Day</h2>
+            <p><strong>Day:&nbsp;</strong> {{truncDay(mostTweetPublishedDay.Day)}}</p>
+            <p><strong>Total:&nbsp;</strong>{{mostTweetPublishedDay.Total}} Tweet</p>
+            <ng-container *ngFor="let topic of availableTopicOfTweets">
+              <p><strong>{{formatString(topic)}}:&nbsp;</strong>{{mostTweetPublishedDay[getKeyByTopic(topic)]}}</p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="column is-4">
+          <div class="box has-text-centereds  is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px;">
+            <h2> Fewest Tweet Published Day</h2>
+            <p><strong>Day:&nbsp;</strong> {{truncDay(fewestTweetPublishedDay.Day)}}</p>
+            <p><strong>Total:&nbsp;</strong>{{fewestTweetPublishedDay.Total}} Tweet</p>
+            <ng-container *ngFor="let topic of availableTopicOfTweets">
+              <p><strong>{{formatString(topic)}}:&nbsp;</strong>{{fewestTweetPublishedDay[getKeyByTopic(topic)]}}</p>
+            </ng-container>
+          </div>
+        </div>
+        <div class="column is-4" >
+          <div class="columns is-multiline">
+            <div class="column is-full">
+              <div class="box has-text-centereds  is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px;height: 258px;">
+                <h2>Most Frequent Topic of the Day: {{truncDay(this.statistic_dist_by_day[this.currDay].Day)}}</h2>
+                <p><strong>Topic:&nbsp;</strong> {{mostFrequentCategoryOfDay['Topic']}}</p>
+                <p><strong>Value:&nbsp;</strong>{{mostFrequentCategoryOfDay['Value']}} Tweet</p>
+                <p><strong>Percentage:&nbsp;</strong>{{mostFrequentCategoryOfDay['Percentage']}} Tweet</p>
+
+              </div>
+            </div>
+            <div class="column is-full">
+              <div class="box has-text-centereds  is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px;height: 258px;">
+                <h2>Least Frequent Topic of the Day: {{truncDay(this.statistic_dist_by_day[this.currDay].Day)}}</h2>
+                <p><strong>Topic:&nbsp;</strong> {{leastFrequentCategoryOfDay['Topic']}}</p>
+                <p><strong>Value:&nbsp;</strong>{{leastFrequentCategoryOfDay['Value']}} Tweet</p>
+                <p><strong>Percentage:&nbsp;</strong>{{leastFrequentCategoryOfDay['Percentage']}} Tweet</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        
+        
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--
+<div class="box has-text-centered" [@inOutAnimation] style="border: 2px solid #f6f7f8; border-radius: 30px;">
+    <div class="box has-text-centered is-flex is-justify-content-center is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px; min-height: 400px;">
+    <canvas id="histogramChart"></canvas>
+    </div>
+    <div class="box has-text-centered is-justify-content-center is-fullwidth " style="border: 2px solid #4482c0; border-radius: 30px;">
+        <div class="columns is-multiline">
+            <div class="column is-full">
+                <h1>{{truncDay(this.statistic_dist_by_day[this.currDay].Day)}}</h1>
+            </div>
+            <div class="column is-one-three" >
+            <div class="is-flex is-justify-content-center is-align-items-center" style="max-height: 800px;">
+              <canvas id="pieChart"></canvas>
+              </div>
+            </div>
+            <div class="column is-full">
+              <div class="buttons is-centered">
+                <button class="button is-rounded is-outlined is-info " [disabled]="this.currDay==0 ? true : false" (click)="previousDayChart()" >Previous Chart</button>
+                <button class="button is-rounded is-outlined is-info" [disabled]="this.currDay==(this.statistic_dist_by_day.length-1) ? true : false"(click)="nextDayChart()"  >Next Chart</button>
+              </div>
+            </div>
+          </div>
+    </div>
+</div>
+
+
+-->

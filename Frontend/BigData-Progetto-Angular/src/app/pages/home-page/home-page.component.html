@@ -1,0 +1,46 @@
+<section class="hero is-primary is-bold is-fullheight is-large">
+    <div class="hero-body is-marginless is-paddinglessh">
+      <div class="container">
+        <div class="columns is-multiline">
+          <div class="column is-full">
+            <div class="column is-5 is-offset-0">
+              <article class="message is-info" style="background-color: #ffffff;">
+                <div class="message-body content is-normal">
+                  <h3> Harvey Tracker </h3>
+                  <h1><strong>Track the Storm, See the Impact - with Our Harvey Tweet Analysis</strong></h1>
+                  <p>The web app analyzes Spark-based tweets about Hurricane Harvey to detect trends and sentiments on Twitter. The analysis results are displayed through interactive graphs and filterable maps based on geographic location, content, and other criteria.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          
+
+          <div class="column is-full">
+            <div class="column is-5 is-offset-0">
+              <article class="message is-info" style="background-color: #ffffff;">
+                <div class="message-body content is-normal">
+                  <h2> Would you like to classify <strong> your tweet </strong>? Try it now.</h2>
+                  <div class="container">
+
+                    <div class="field is-grouped ">
+                      <div class="control is-expanded">
+                        <input class="input is-rounded" [(ngModel)]="text_in" type="text" placeholder="e.g. In the wake of Harvey, Dallasites are asking: Could catastrophic floods happen here? Yes https://t.co/V8Ezzw3Un5 ">
+                      </div>
+                      <div class="control">
+                        <button class="button is-rounded is-info is-outlined" [disabled]="!text_in" [class.isLoading]="loading_button_go" (click)="getTopic()">Go</button>
+                      </div>
+                    </div>
+                    <div class="field" *ngIf="topicOfText">
+                      <div class="control">
+                        <label>Your tweet has been classified as : {{topicOfText}}</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

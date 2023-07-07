@@ -1,0 +1,1 @@
+{"class":"org.application.disastrinaturali.TweetTextCleaner","timestamp":1685308550825,"sparkVersion":"3.4.0","uid":"TweetTextCleaner","paramMap":{"inputCol":"text","outputCol":"cleaned_text"},"defaultParamMap":{"outputCol":"TweetTextCleaner__output"}}

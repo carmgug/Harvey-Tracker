@@ -1,0 +1,34 @@
+
+<section>
+  <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: #ffffff;">
+    <div class="navbar-brand">
+      <a class="navbar-item" routerLink="">
+        <img src='/assets/image/logo-hurricane.png' width="40" height="28">
+        <span class="is-size-5 has-text-black has-text-weight-bold" >{{title}}</span>
+      </a>
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="buttonRow">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+            
+    <div id="buttonRow" class="navbar-menu">
+      <div class="navbar-end">
+        <!--COMMENTO: GESTIONE BOTTONI-->
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-link is-outlined is-rounded" routerLink="visualizeMaps">
+              Explore Hurricane Harvey Tweets Worldwide <mat-icon>map</mat-icon>
+            </a>
+            <a class="button is-link is-outlined is-rounded" routerLink="visualizeStatistic">
+              View Hurricane Harvey Tweet Statistics <mat-icon>poll</mat-icon>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</section>
+
+

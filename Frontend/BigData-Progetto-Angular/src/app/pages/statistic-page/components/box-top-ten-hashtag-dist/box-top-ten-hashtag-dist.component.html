@@ -1,0 +1,86 @@
+<div class="box has-text-centered" style="border: 2px solid #f6f7f8; border-radius: 30px;">
+    <div class="columns is-multiline">
+        <!--Riga Grafici-->
+        <div class="column is-full">
+            <div class="box" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                <div class="columns is-multiline">
+                    <div class="column is-full">
+                        <h1>Hashtag: {{statistic_top_ten_hashtag[this.curr_hashtag].hashtag}}</h1>
+                    </div>
+                    <!--Riga con Istrogramma e Grafico a torta-->
+                    <div class="column is-full">
+                        <div class="columns is-desktop">
+                            <!--Istogramma-->
+                            <div class="column is-two-thirds">
+                                <div class="box has-text-centereds is-justify-content-center is-fullwidth" style="border-radius: 30px; height: 100%;">
+                                    <canvas id="histogramChart"></canvas>
+                                </div>
+                            </div>
+                            <!--PieChart-->
+                            <div class="column is-one-third">
+                                <div class="box has-text-centereds is-justify-content-center is-fullwidth" style="border-radius: 30px; height: 100%;">
+
+                                    <div class="columns is-multiline">
+                                        <!--GIORNO CORRENTE-->
+                                        <div class="column is-full">
+                                            <h2>{{truncDay(statistic_top_ten_hashtag[curr_hashtag].info[curr_day].Day)}}</h2>
+                                        </div>
+                                        <!--GRAFICO A TORTA-->
+                                        <div class="column is-full">
+                                            <canvas id="pieChart"></canvas>
+                                        </div>
+                                        <!--BOTTONI-->
+                                        <div class="column is-full">
+                                            <div class="buttons is-centered">
+                                                <button class="button is-rounded is-outlined is-info " [disabled]="curr_day==0" (click)="previousDayPieChart()">Previous Day</button>
+                                                <button class="button is-rounded is-outlined is-info" [disabled]="curr_day==statistic_top_ten_hashtag[curr_hashtag].info.length-1" (click)="nextDayPieChart()">Next Day</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!--Riga bottoni per manipolare i grafici-->
+                    <div class="column is-full">
+                        <!--Bottoni-->
+                        <div class="buttons is-centered">
+                            <button class="button is-rounded is-outlined is-info " [disabled]="curr_hashtag==0" (click)="previousHashtagChart()">Previous Hashtag</button>
+                            <button class="button is-rounded is-outlined is-info" [disabled]="curr_hashtag==statistic_top_ten_hashtag.length-1" (click)="nextHashtagChart()">Next Hashtag</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Riga statistiche-->
+        <div class="column is-full">
+            <div class="columns is-desktop">
+                <!--Colonna Hashtag Più frequente-->
+                <div class="column is-one-third">
+                    <div class="box" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                        <h3>Most Frequent Hashtag: {{most_frequent_hashtag}} </h3>
+                        <p *ngFor="let info of summary_mfh | keyvalue"> <strong>{{info.key}}:</strong>{{info.value}}</p>
+                    </div>
+                </div>
+                <!--Colonna Hashtag Meno Frequente-->
+                <div class="column is-one-third">
+                    <div class="box" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                        <h3>Least Frequent Hashtag: {{least_frequent_hashtag}}</h3>
+                        <p *ngFor="let info of summary_lfh | keyvalue"> <strong>{{info.key}}:</strong>{{info.value}}</p>
+
+                    </div>
+                </div>
+                <!--Colonna Hastags con Ripetizioni Totali-->
+                <div class="column is-one-third">
+                    <div class="box" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                        <h3>Total Occurrences for Each Hashtag</h3>
+                            <p *ngFor="let elem of statistic_top_ten_hashtag"> <strong>{{elem.hashtag}}:</strong> {{getTotalOccurrences(elem.info)}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

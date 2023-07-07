@@ -1,0 +1,100 @@
+<div class="box" *ngIf="tweets" [@inOutAnimation] style="border: 2px solid #f6f7f8; border-radius: 30px;">
+  <!--Tweet Corrente-->
+  <div class="box" *ngFor="let tweet of tweets | paginate: { itemsPerPage: 2, currentPage: page, id: 'pagination' }"
+       [@inOutAnimation] style="background-color: rgb(218, 225, 237); min-height: 380px; ">
+    <article class="media">
+      <div class="media-left">
+        <figure class="image is-64x64">
+          <img src={{tweet.quoted_status.user.profile_image_url}}
+               onerror="this.onerror=null; this.src='/assets/image/user/user-image.png';" alt="tweet profile img">
+        </figure>
+      </div>
+      <div class="media-content">
+        <div class="content">
+          <p>
+            <strong>{{tweet.quoted_status.user.name}}</strong> <small> @{{tweet.quoted_status.user.screen_name}}</small>
+            <small>{{tweet.quoted_status.created_at}}</small>
+            <br>
+            <ng-container *ngIf="tweet.quoted_status.truncated">
+              {{ tweet.quoted_status.extended_tweet.full_text }}
+            </ng-container>
+            
+            <ng-container *ngIf="!tweet.quoted_status.truncated">
+              {{ tweet.quoted_status.text }}
+            </ng-container>
+            
+            <br>
+            
+          </p>
+        </div>
+
+        <div class="image-of-current-tweet" *ngIf="tweet.quoted_status.entities.media" >
+          <div *ngFor="let media of tweet.quoted_status.entities.media">
+            <figure class="image-container" *ngIf="media.type=='photo'"  style="max-width: 250px; max-height: 250px;">
+              <p class="image is-left">
+                <img src={{media.media_url}} alt="[Image not available]" style="max-width: 250px; max-height: 250px;">
+              </p>
+            </figure>
+          </div>
+        </div>
+
+        <div class="Video-of-current-tweet"
+             *ngIf="tweet.quoted_status.extended_tweet && tweet.quoted_status.extended_tweet.entities.media" >
+          <div *ngFor="let media of tweet.quoted_status.extended_tweet.entities.media">
+            <div class="has-ratio is-16by9" *ngIf="media.type == 'video'"  style="max-width: 250px; max-height: 250px;" >
+              <iframe *ngIf="checkIfMp4(media.video_info.variants)"
+                      [src]="sanitizer.bypassSecurityTrustResourceUrl(getMp4(media.video_info.variants))"
+                      frameborder="0" allowfullscreen alt="video" allow="autoplay; encrypted-media"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <nav class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item" aria-label="reply">
+                <span class="icon is-small">
+                  <i class="fas fa-reply" aria-hidden="true"></i>
+                </span>
+              {{tweet.reply_count}}
+            </div>
+
+
+            <div class="level-item" aria-label="retweet">
+                <span class="icon is-small">
+                  <i class="fas fa-retweet" aria-hidden="true"></i>
+                </span>
+              {{tweet.quoted_status.retweet_count}}
+            </div>
+
+
+            <div class="level-item" aria-label="like">
+                <span class="icon is-small">
+                  <i class="fa-solid fa-heart" aria-hidden="true"></i>
+                </span>
+              {{tweet.quoted_status.favorite_count}}
+            </div>
+
+
+          </div>
+        </nav>
+      </div>
+    </article>
+  </div>
+  <nav class="pagination is-rounded" *ngIf="tweets.length > 2" role="navigation" aria-label="pagination"
+       id="pagination">
+    <button class="pagination-previous" (click)="previousPage()" [ngClass]="page==1 ? 'is-disabled' : ''"
+            [disabled]="page==1 ? 'is-disabled' : ''">Previous
+    </button>
+    <button class="pagination-next" (click)="nextPage()" [ngClass]="page==5 ? 'is-disabled' : ''"
+            [disabled]="page==5 ? 'is-disabled' : ''">Next page
+    </button>
+    <ul class="pagination-list">
+      <li><a class="pagination-link" [ngClass]="page==1 ? 'is-current' : ''" (click)="page = 1">1</a></li>
+      <li><a class="pagination-link" [ngClass]="page==2 ? 'is-current' : ''" (click)="page = 2">2</a></li>
+      <li><a class="pagination-link" [ngClass]="page==3 ? 'is-current' : ''" (click)="page = 3">3</a></li>
+      <li><a class="pagination-link" [ngClass]="page==4 ? 'is-current' : ''" (click)="page = 4">4</a></li>
+      <li><a class="pagination-link" [ngClass]="page==5 ? 'is-current' : ''" (click)="page = 5">5</a></li>
+    </ul>
+  </nav>
+</div>
+

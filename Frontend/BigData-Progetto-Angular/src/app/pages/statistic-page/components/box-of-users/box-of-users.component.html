@@ -1,0 +1,210 @@
+
+
+
+
+<div class="box" *ngIf="users" [@inOutAnimation] style="border: 2px solid #f6f7f8; border-radius: 30px;">
+  <div class="columns is-multiline">
+    <div class="column is-full" *ngFor="let elem of users | paginate: { itemsPerPage: 4, currentPage: page, id: 'pagination' }">
+      <div class="columns">
+
+      
+      <div class="column is-two-third">
+          <!--user Corrente-->
+          <div class="box" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">            <article class="media">
+              <div class="media-left">
+                <figure class="image is-64x64">
+                  <img src={{elem.user.profile_image_url}}
+                      onerror="this.onerror=null; this.src='/assets/image/user/user-image.png';" alt="user profile img">
+                </figure>
+              </div>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong>{{elem.user.name}}</strong> <small> @{{elem.user.screen_name}}</small>
+                    <br>
+                    <strong>User ID:&nbsp;</strong> <small>{{elem.user.id}}; </small> <strong>Language:&nbsp;</strong> <small>{{elem.user.lang}}; </small> <strong>Location:&nbsp;</strong><small>{{elem.user.location}}; </small>
+                    <strong>Created at:&nbsp;</strong><small>{{transformDate(elem.user.created_at)}}; </small>
+                    <br>
+                    <strong>Description:&nbsp;</strong>{{elem.user.description}}
+                    <br>
+                  </p>
+
+                </div>
+                <!--Table contenente il numero di tweet-->
+                <div class="table-container" >
+                  <table id="{{elem.id}}" class=" table is-striped is-narrow is-hoverable is-fullwidth" style="border-radius: 10px; ">
+                    <thead>
+                      <tr >
+                        <th *ngFor="let topic of selectedOptions" title="{{topic}}">{{topicAbbreviations[topic]}}</th>
+                        <th title="total">Total</th>
+                        <th title="max_topic_name">NAME</th>
+                        <th title="max_topic_value">VALUE</th>
+                        <th title="max_topic_confidence">CF</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td *ngFor="let topic of selectedOptions">{{elem[topic][0]}}</td>
+                        <td>{{elem['Total']}}</td>
+                        <td>{{elem['max_topic_name']}}</td>
+                        <td>{{elem['max_topic_value'][0]}}</td>
+                        <td>{{elem['max_topic_value'][1]}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div>
+                  <button class="button is-rounded is-outlined is-info is-small" (click)="downloadCSV(elem.id)">Scarica CSV</button>
+                  <p>
+                </div>
+
+                
+
+
+                <nav class="level is-mobile">
+                  <div class="level-left">
+                      <div class="level-item" aria-label="follower">
+                          <span class="icon is-small">
+                          <i class="fas fa-users icon" aria-hidden="true"></i>
+                          </span>
+                          &nbsp;{{elem.user.followers_count}}
+                      </div>
+
+
+                      <div class="level-item" aria-label="following">
+                          <span class="icon is-small">
+                          <i class="fa-solid fa-user-friends icon" aria-hidden="true"></i>
+                          </span>
+                          &nbsp;{{elem.user.friends_count}}
+                      </div>
+
+
+                  </div>
+                  </nav>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="column is-one-third">
+          <div class="box has-text-centered is-justify-content-center is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+              <radarchart-user [name]="elem.user.name" [user]="elem" [topics]="selectedOptions_input"></radarchart-user>          
+          </div>
+        </div>
+      </div>
+
+    </div>
+        
+  </div>
+  <nav class="pagination is-rounded" *ngIf="users.length > 2" role="navigation" aria-label="pagination"
+        id="pagination">
+    <button class="pagination-previous" (click)="previousPage()" [ngClass]="page==1 ? 'is-disabled' : ''"
+            [disabled]="page==1 ? 'is-disabled' : ''">Previous
+    </button>
+    <button class="pagination-next" (click)="nextPage()" [ngClass]="page==users.length/4 ? 'is-disabled' : ''"
+            [disabled]="users.length<=4 || page==users.length/4 ? 'is-disabled' : ''">Next page
+    </button>
+    
+  </nav>
+  </div>
+
+  <!--
+
+    <div class="box" *ngIf="users" [@inOutAnimation] style="border: 2px solid #f6f7f8; border-radius: 30px;">
+  <div class="columns">
+        <div class="column  is-two-third">
+          <div class="box" *ngFor="let elem of users | paginate: { itemsPerPage: 4, currentPage: page, id: 'pagination' }"
+              [@inOutAnimation] style="background-color: rgb(218, 225, 237); min-height: 200px;  ">
+            <article class="media">
+              <div class="media-left">
+                <figure class="image is-64x64">
+                  <img src={{elem.user.profile_image_url}}
+                      onerror="this.onerror=null; this.src='/assets/image/user/user-image.png';" alt="user profile img">
+                </figure>
+              </div>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong>{{elem.user.name}}</strong> <small> @{{elem.user.screen_name}}</small>
+                    <br>
+                    <strong>User ID:&nbsp;</strong> <small>{{elem.user.id}}; </small> <strong>Language:&nbsp;</strong> <small>{{elem.user.lang}}; </small> <strong>Location:&nbsp;</strong><small>{{elem.user.location}}; </small>
+                    <strong>Created at:&nbsp;</strong><small>{{transformDate(elem.user.created_at)}}; </small>
+                    <br>
+                    <strong>Description:&nbsp;</strong>{{elem.user.description}}
+                    <br>
+                  </p>
+
+                </div>
+                <div class="table-container" >
+                  <table id="{{elem.id}}" class=" table is-striped is-narrow is-hoverable is-fullwidth" style="border-radius: 10px; ">
+                    <thead>
+                      <tr >
+                        <th *ngFor="let topic of selectedOptions" title="{{topic}}">{{topicAbbreviations[topic]}}</th>
+                        <th>Total</th>
+                        <th title="max_topic_name">NAME</th>
+                        <th title="max_topic_value">VALUE</th>
+                        <th title="max_topic_confidence">CF</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td *ngFor="let topic of selectedOptions">{{elem[topic][0]}}</td>
+                        <td>{{elem['Total']}}</td>
+                        <td>{{elem['max_topic_name']}}</td>
+                        <td>{{elem['max_topic_value'][0]}}</td>
+                        <td>{{elem['max_topic_value'][1]}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div>
+                  <button class="button is-rounded is-outlined is-info is-small" (click)="downloadCSV(elem.id)">Scarica CSV</button>
+                  <p>
+                </div>
+
+                
+
+
+                <nav class="level is-mobile">
+                  <div class="level-left">
+                      <div class="level-item" aria-label="follower">
+                          <span class="icon is-small">
+                          <i class="fas fa-users icon" aria-hidden="true"></i>
+                          </span>
+                          &nbsp;{{elem.user.followers_count}}
+                      </div>
+
+
+                      <div class="level-item" aria-label="following">
+                          <span class="icon is-small">
+                          <i class="fa-solid fa-user-friends icon" aria-hidden="true"></i>
+                          </span>
+                          &nbsp;{{elem.user.friends_count}}
+                      </div>
+
+
+                  </div>
+                  </nav>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="column is-one-thirds">
+          <div class="box has-text-centereds is-justify-content-center is-fullwidth" style="border: 2px solid #4482c0; border-radius: 30px; height: 100%;">
+                <canvas id="radarChart"></canvas>            
+          </div>
+        </div>
+  </div>
+  <nav class="pagination is-rounded" *ngIf="users.length > 2" role="navigation" aria-label="pagination"
+        id="pagination">
+    <button class="pagination-previous" (click)="previousPage()" [ngClass]="page==1 ? 'is-disabled' : ''"
+            [disabled]="page==1 ? 'is-disabled' : ''">Previous
+    </button>
+    <button class="pagination-next" (click)="nextPage()" [ngClass]="page==users.length/4 ? 'is-disabled' : ''"
+            [disabled]="users.length<=4 || page==users.length/4 ? 'is-disabled' : ''">Next page
+    </button>
+    
+  </nav>
+  </div>
+  -->

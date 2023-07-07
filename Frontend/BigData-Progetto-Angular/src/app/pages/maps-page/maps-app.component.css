@@ -1,0 +1,13 @@
+
+.map {
+    width: 100%;
+    height: 437px;
+
+}
+.columns {
+    box-sizing: border-box;
+  }
+
+  .columns .column.is-bordered {
+    border: 1px solid #ccc;
+  }

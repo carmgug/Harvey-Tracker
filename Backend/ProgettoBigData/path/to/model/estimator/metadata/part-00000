@@ -1,0 +1,1 @@
+{"class":"org.apache.spark.ml.Pipeline","timestamp":1684836412286,"sparkVersion":"3.4.0","uid":"pipeline_4405a434fe3a","paramMap":{"stageUids":["TweetTextCleaner","regexTok_920882e554d9","stopWords_63c8ff376387","hashingTF_505f9855cf2f","idf_61ee11e6335c","strIdx_be071496553f","nb_f6c65ae7ba5d","idxToStr_64f2115a7fac"]},"defaultParamMap":{}}

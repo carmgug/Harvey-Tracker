@@ -1,0 +1,29 @@
+.custom-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid transparent #4482c0; /* Colore azzurro del bordo esterno */
+    border-radius: 10px; /* Arrotondamento degli angoli esterni */
+  }
+  
+  .custom-table td,
+  .custom-table th {
+    border: 1px dashed  #4482c0 ; /* Rimuove i bordi interni */
+    padding: 10px; /* Aggiungi padding per separare il contenuto dalle linee */
+  }
+  
+  .custom-table th:first-child {
+    border-top-left-radius: 10px;
+  }
+  
+  .custom-table th:last-child {
+    border-top-right-radius: 10px;
+  }
+  
+  .custom-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+  }
+  
+  .custom-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+  }
+  
